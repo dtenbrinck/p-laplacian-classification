@@ -65,18 +65,23 @@ classdef kNNGraph < Graph
             % get k-nearest neighbors using a kdtree approach implemented in Matlab
             
             if strcmp(distanceFunction, "Euclidean")
+                
                 [indices_all, ~] = knnsearch(data.coordinates,data.coordinates,...
                     'k',neighborhood.numberOfNeighbors+1,...
                     'Distance', 'euclidean');
                 indices_all = indices_all(:,2:neighborhood.numberOfNeighbors+1);
+                
             elseif strcmp(distanceFunction, "Tangent")
+                
+                profile on
                 [indices_all, D] = knnsearch(data.coordinates,data.coordinates,...
                     'k',neighborhood.numberOfNeighbors+1,...
                     'Distance', @tangent);
                 indices_all = indices_all(:,2:neighborhood.numberOfNeighbors+1);
-                %D = D(:,2:neighborhood.numberOfNeighbors+1);
+                D = D(:,2:neighborhood.numberOfNeighbors+1);
+                profile viewer
+                
             end
-            
             
             % as the kd-tree object can only extract neighbors of single nodes
             % we have to loop over all vertices
