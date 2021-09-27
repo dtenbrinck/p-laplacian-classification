@@ -55,10 +55,10 @@ numInClass = [980, 1135, 1032, 1010, 982, 892,958,1028,974,1009]';
 labeledIndices = labelIndices(numLabels, numInClass, lGroups);
 
 %% PERFORM CLASSIFICATION
-
+numVerts = 10000
 
 tic
-[~,~,perc] = classifyMnist(G, 2, 10, labeledIndices);
+[~,~,perc] = classifyMnist(G, 2, 10, labeledIndices, numVerts);
 save('./savedData/goodweights12.mat', 'perc');
 toc
 
