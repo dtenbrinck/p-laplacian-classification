@@ -1,0 +1,27 @@
+function labeledIndices = labelIndices(numLabels, anz)
+%labelIndices - Randomly determines labeled indices for multiclass 
+%classification.
+%
+% labeledIndices = labeledIndices(numLabels)
+%
+% Input:
+%   numLabels: number of indices to label in *each* class
+%   anz: number of elements in each class
+%
+% Outputs:
+%   labeledIndices: An (10, numLables) 
+
+% labeled Indices
+labeledIndices = zeros(numLabels, 10);
+
+%% Loop over all classes
+for i = 1:length(anz)
+    perm = randperm(anz(i)); 
+    
+    
+    seeds(((i-1)*labelPercentage+1):(i*labelPercentage)) = L(i,perm(1:labelPercentage));
+end
+
+
+
+end

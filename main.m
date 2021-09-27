@@ -51,6 +51,7 @@ weightFunction.function = @(x)100*exp(-x.^2./10e+5);
 
 %% PERFORM CLASSIFICATION
 
+
 tic
 [~,~,perc] = classifyMnist(G,2,10,labels, L,10);
 save('./savedData/goodweights12.mat', 'perc');

@@ -21,11 +21,7 @@ anz = [980, 1135, 1032, 1010, 982, 892,958,1028,974,1009]';
 %%precomputed random seeds   
 seeds = seedmat(1:stepsize:1000,j);
 
-%%for new computation of random seeds:
-% for i = 1:10
-% perm = randperm(anz(i));
-% seeds(((i-1)*labperc+1):(i*labperc)) = L(i,perm(1:labperc));
-% % end
+
 % 
 % seedmat(:,j) = seeds;
 
