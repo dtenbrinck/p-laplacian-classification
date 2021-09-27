@@ -50,9 +50,9 @@ weightFunction.function = @(x)100*exp(-x.^2./10e+5);
 %load('euclidean.mat', 'Ge');  % euclidean distance with 'good' weight function
 
 %% Get labeled Data
-labelPercentage = 0.1;
+numLabels = 5;
 numInClass = [980, 1135, 1032, 1010, 982, 892,958,1028,974,1009]';
-[labeledIndices, numLabels] = labelIndices(labelPercentage, numInClass, lGroups);
+labeledIndices = labelIndices(numLabels, numInClass, lGroups);
 
 %% PERFORM CLASSIFICATION
 
