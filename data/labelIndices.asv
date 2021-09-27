@@ -1,27 +1,29 @@
-function labeledIndices = labelIndices(numLabels, anz)
+function labeledIndices = labelIndices(numLabels, numInClass, lGroups)
 %labelIndices - Randomly determines labeled indices for multiclass 
 %classification.
 %
-% labeledIndices = labeledIndices(numLabels)
+% labeledIndices = labeledIndices(labelPercentage, numInClass, lGroups)
 %
 % Input:
 %   numLabels: number of indices to label in *each* class
-%   anz: number of elements in each class
+%   numInClass: number of elements in each class
+%   lGroups: labeling groups for each class
 %
 % Outputs:
-%   labeledIndices: An (10, numLables) 
+%   labeledIndices: An (numClasses, numLables) array, where in the ith row 
+%                   stores the labeled indices for the ith class
+%
+% Author: Daniel Tenbrinck, FAU
 
-% labeled Indices
-labeledIndices = zeros(numLabels, 10);
+% initialize labeled indices
+labeledIndices = -ones(length(numInClass), numLabels);
 
 %% Loop over all classes
-for i = 1:length(anz)
-    perm = randperm(anz(i)); 
+for i = 1:length(numInClass)
+    % random permutation of possible inidices
+    perm = randperm(numInClass(i));
     
-    
-    seeds(((i-1)*labelPercentage+1):(i*labelPercentage)) = L(i,perm(1:labelPercentage));
+    % set labeled indices
+    labeledIndices(i, :) = lGroups(i, perm(1:numLabels));
 end
-
-
-
 end

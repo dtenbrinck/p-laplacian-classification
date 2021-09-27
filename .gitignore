@@ -1,3 +1,4 @@
 data/t10k*
 *.mat
+*.asv
 *~
