@@ -1,15 +1,15 @@
-% clean up
+%% CLEAN UP
 clc; clear; close all;
 
-% add needed subfolders
+% add needed subdirectories
 addpath('./data');
 addpath(genpath('./graph_functions'));
 addpath('./savedData');
 
 %% LOAD SETTINGS FOR DATA AND GRAPH CONSTRUCTION
 
-% LOAD MNIST DATA
-%%each coloumn represents a 28x28 picture
+% LOAD MNIST DATA (10k images)
+%%each column represents a 28x28 image
 images = loadMNISTImages('t10k-images.idx3-ubyte');
 
 %%GET LABELS
@@ -19,13 +19,9 @@ images = loadMNISTImages('t10k-images.idx3-ubyte');
 %%each picture's gray values are treated as coordinates in 784-dim space
 coordinates = images';
 
-
 % SET GRAPH PROPERTIES FOR POINT CLOUDS
-
 % define data properties
 data.type = 'point_cloud';
-data.dimDomain = 3;
-data.dimRange = 1;
 data.coordinates = coordinates;
 
 % define parameters for k nearest neighbor search
@@ -33,8 +29,7 @@ neighborhood.type = 'kNN';
 neighborhood.numberOfNeighbors = 5;
 
 % define distance function NO INFLUENCE ON TANGENT DISTANCE
-distanceFunction.innerNorm = @(x)(x.^2);
-distanceFunction.outerNorm = @(x)(sqrt(x));
+distanceFunction = 'Euclidean'; % or 'Tangent'
 
 % define weight function
 weightFunction.function = @(x)100*exp(-x.^2./10e+5);
@@ -42,9 +37,14 @@ weightFunction.function = @(x)100*exp(-x.^2./10e+5);
 
 %% CONSTRUCT GRAPH FROM DATA
 
- tic
- G = constructGraph(data,neighborhood,distanceFunction,weightFunction); 
- toc
+ fprintf('Building graph from MNIST dataset...');
+
+ % call constructor for kNN graphs
+ G = kNNGraph(data,neighborhood,distanceFunction,weightFunction);
+ % symmetrize kNN graph
+ G = symmetrizeGraph(G);
+    
+ fprintf('finished!\n');
 
 %load('goodweights.mat', 'G'); % tangent distance with w(x) = 100*exp(-x.^2./10e+5)
 %load('badweights.mat', 'Gdis'); % tangent distance with w(x) = 1
