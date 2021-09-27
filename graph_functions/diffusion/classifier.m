@@ -1,4 +1,4 @@
-function labels = classifier(G, p, lambda, labeledIndices, numVerts)
+function labels = classifier(G, p, lambda, labeledIndices, numVerts, relDiff)
 [numClasses, ~]  = size(labeledIndices);
 
 %% initalize arrays for labeld and unlabeld data
@@ -17,7 +17,7 @@ for i = 1:10
     labeled(labeledIndices(i, :)) = 1;
     
     % perform classification
-    unlabeled(i, :) = myClassifier(G, labeled, p, lambda);
+    unlabeled(i, :) = iterateDiffusion(G, labeled, p, lambda, relDiff);
     
     % reset the labelling
     labeled(labeledIndices(i, :)) = -1;
