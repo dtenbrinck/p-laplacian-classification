@@ -7,6 +7,6 @@ while(diff>eps)
     falt = fneu;
     fneu = gaussjacobidiffusion(falt, f0, p, lambda, G);
     diff = norm(fneu-falt);
-    disp(diff)
+    %disp(diff)
 end
 end
