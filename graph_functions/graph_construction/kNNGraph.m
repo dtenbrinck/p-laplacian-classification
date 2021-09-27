@@ -61,66 +61,45 @@ classdef kNNGraph < Graph
             obj.graphProperties.weightFunction = weightFunction;
             obj.graphProperties.distanceFunction = distanceFunction;
             
-            % check which type of data is given
-            if strcmp(data.type,'grid') % grid structured data
-                
-                % compute indices and distances of neighbors for given settings
-                [indices, distances] = computePatchDistances(data, data, obj);
-                
-                % extract and set neighbor node indices in edges
-                tmp2 = permute(indices, [3,1,2]);
-                obj.edges(:,2) = tmp2(:);
-                
-                % extract and set neighbor node weights in edgeWeights
-                tmp3 = permute(distances,[3,1,2]);
-                obj.edgeWeights = obj.graphProperties.weightFunction.function(tmp3(:));
-                
-            elseif strcmp(data.type,'point_cloud') % point cloud data
-                
-                %% TANGENT / EULIDEAN DISTANCE: CHANGE HERE
-                % get k-nearest neighbors using a kdtree approach implemented in Matlab
-                
-                %% Include following lines for TANGENT DISTANCE
-                %         indices_all, D] = knnsearch(data.coordinates,data.coordinates,...
-                %                                       'k',neighborhood.numberOfNeighbors+1,...
-                %                                       'Distance', @tangent);
-                
-                %% Include following lines for EUCLIDEAN DISTANCE
+            
+            % get k-nearest neighbors using a kdtree approach implemented in Matlab
+            
+            if strcmp(distanceFunction, "Euclidean")
                 [indices_all, ~] = knnsearch(data.coordinates,data.coordinates,...
                     'k',neighborhood.numberOfNeighbors+1,...
                     'Distance', 'euclidean');
-                %% for BOTH
-                % get rid of the first column
                 indices_all = indices_all(:,2:neighborhood.numberOfNeighbors+1);
-                
-                %% Include following line for TANGENT DISTANCE
+            elseif strcmp(distanceFunction, "Tangent")
+                [indices_all, D] = knnsearch(data.coordinates,data.coordinates,...
+                    'k',neighborhood.numberOfNeighbors+1,...
+                    'Distance', @tangent);
+                indices_all = indices_all(:,2:neighborhood.numberOfNeighbors+1);
                 %D = D(:,2:neighborhood.numberOfNeighbors+1);
+            end
+            
+            
+            % as the kd-tree object can only extract neighbors of single nodes
+            % we have to loop over all vertices
+            for u = 1:obj.numberOfVertices
                 
-                %% for BOTH
-                % as the kd-tree object can only extract neighbors of single nodes
-                % we have to loop over all vertices
-                for u = 1:obj.numberOfVertices
-                    
-                    % extract indices of k-nearest neighbors from all indices
-                    indices = indices_all(u,:);
-                    
-                    % set edges accordingly
-                    obj.edges((u-1)*neighborhood.numberOfNeighbors+(1:neighborhood.numberOfNeighbors),2) = indices;
-                    
-                    % compute distance of k nearest neighbor points to current node
-                    
-                    %% Include following line for TANGENT DISTANCE
-                    %distances = D(u,:);
-                    
-                    %% Include following lines for EUCLIDEAN DISTANCE
+                % extract indices of k-nearest neighbors from all indices
+                indices = indices_all(u,:);
+                
+                % set edges accordingly
+                obj.edges((u-1)*neighborhood.numberOfNeighbors+(1:neighborhood.numberOfNeighbors),2) = indices;
+                
+                % compute distance of k nearest neighbor points to current node
+                if strcmp(distanceFunction, "Euclidean")
                     distances = repmat(data.coordinates(u,:),neighborhood.numberOfNeighbors,1) - data.coordinates(indices,:);
                     distances = sqrt(sum(distances.^2,2));
-                    
-                    %% for BOTH
-                    % compute and set edge weights accordingly
-                    obj.edgeWeights((u-1)*neighborhood.numberOfNeighbors+[1:neighborhood.numberOfNeighbors])...
-                        = obj.graphProperties.weightFunction.function(distances);
+                elseif strcmp(distanceFunction, "Tangent")
+                    distances = D(u,:);
                 end
+                
+                
+                % compute and set edge weights accordingly
+                obj.edgeWeights((u-1)*neighborhood.numberOfNeighbors+[1:neighborhood.numberOfNeighbors])...
+                    = obj.graphProperties.weightFunction.function(distances);
             end
         end
         

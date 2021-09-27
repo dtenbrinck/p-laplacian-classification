@@ -21,7 +21,6 @@ coordinates = images';
 
 % SET GRAPH PROPERTIES FOR POINT CLOUDS
 % define data properties
-data.type = 'point_cloud';
 data.coordinates = coordinates;
 
 % define parameters for k nearest neighbor search
@@ -29,7 +28,7 @@ neighborhood.type = 'kNN';
 neighborhood.numberOfNeighbors = 5;
 
 % define distance function NO INFLUENCE ON TANGENT DISTANCE
-distanceFunction = 'Euclidean'; % or 'Tangent'
+distanceFunction = 'Euclidean'; % 'Euclidean' or 'Tangent'
 
 % define weight function
 weightFunction.function = @(x)100*exp(-x.^2./10e+5);
