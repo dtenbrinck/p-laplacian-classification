@@ -51,33 +51,6 @@ classdef Graph
       obj.graphProperties = [];     
     end
     
-    % adds a specified amount of vertices to the graph without overwriting 
-    % other vertices
-    % ATTENTION: make sure node indices are continued properly
-    function addVertices(amountOfVertices)
-      % TODO
-    end
-      
-    % adds an edge with specified weight to the graph
-    % ATTENTION: make sure edge and weight are added to edges and
-    % edgeWeights properly and 0 < weight <= 1 and nodeNeighbors is adapted
-    function addEdge(u,v,weight)
-      % TODO
-    end
-    
-    % removes an edge with index e from the graph
-    % ATTENTION: make sure the corresponding entries in edges and
-    % edgeWeights are removed and nodeNeighbors is adapted
-    function removeEdge(e)
-      % TODO
-    end
-    
-    % assembles and returns the matrix corresponding to the Laplacian operator
-    % ATTENTION: incorporate correct boundary conditions for grid graphs
-    function laplacian = getLaplacianMatrix()
-      % TODO
-    end
-    
     % gets neighbor indices of a specified node u
     % ATTENTION: this is a fallback method which gets probably overwritten 
     % by subclasses of this class

@@ -42,7 +42,10 @@ for i = 1:numClasses
     labeled(labeledIndices(i, :)) = -1;
 end
 
-% assign labels as the label with the highest percentage
-labels = max(unlabeled);
-end
+% assign labels as the label with the highest percentage via argmax
+[~, labels] = max(unlabeled);
 
+% transpose to be consistent with the data format and apply the digit
+% convention by subtracting 1
+labels = labels' - 1;
+end

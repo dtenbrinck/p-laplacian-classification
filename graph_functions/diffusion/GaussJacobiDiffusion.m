@@ -1,4 +1,4 @@
-function f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
+function f = GaussJacobiDiffusion(G, fOld, f0, p, lambda)
 %GaussJacobiDiffusion - applies GauussJacobi scheme for label propagation
 %and diffusion as proposed in [1].
 %
@@ -24,24 +24,22 @@ function f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
 %      Abderrahim Elmoataz; Olivier Lezoray; Sebastien Bougleux
 
  %% Jacobi iteration proposed by Elmoataz et al.
-[n,m] = size(f0);
 W = G.adjacencyMatrix;
 
-if (p==2)&&(m==1)
+if (p==2)
     gamma = 2*W;
 else
-    gamma = computeGamma(W, fold, p,n,m);
+    gamma = computeGamma(W, fOld, p);
 end
-LR = -gamma;
-Ddiag = lambda + sum(gamma,2);
-b = lambda.*f0;
+Ddiag = lambda + sum(gamma, 2);
+b = lambda .* f0;
 
 %jacobi step
-f = (b-LR*fold)./Ddiag;   
+f = (b + gamma * fOld)./Ddiag;   
 end
 
-function gamma = computeGamma(W, falt, p, n,m)
-  ngrad = computeNormedGradient(W,falt,p,n,m);
-  nGGrid = repmat(ngrad,1,n);
+function gamma = computeGamma(W, fOld, p)
+  ngrad = computeNormedGradient(W,fOld, p);
+  nGGrid = repmat(ngrad,1, size(fOld, 1));
   gamma = W.*(nGGrid+nGGrid');
 end
