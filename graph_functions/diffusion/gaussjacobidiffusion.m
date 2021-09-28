@@ -1,5 +1,5 @@
 function f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
-%GaussJacobiDiffusion - applies GauussJacobi schme for label propagation
+%GaussJacobiDiffusion - applies GauussJacobi scheme for label propagation
 %and diffusion
 %
 % f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
