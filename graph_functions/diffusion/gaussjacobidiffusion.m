@@ -1,6 +1,7 @@
 function f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
 %GaussJacobiDiffusion - applies GauussJacobi scheme for label propagation
-%and diffusion
+%and diffusion as proposed in [1].
+%
 %
 % f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
 %
@@ -16,6 +17,11 @@ function f = GaussJacobiDiffusion(G, fold, f0, p, lambda)
 %
 % Authors: Daniel Tenbrinck, Samira Kabri, Tim Roith, 
 %          Friedrich--Alexander-Universitaet Erlangen--Nuernberg
+% -------------------------------------------------------------------------
+% References:
+% [1]: Nonlocal Discrete Regularization on Weighted Graphs: 
+%      A Framework for Image and Manifold Processing, IEEE 2008,
+%      Abderrahim Elmoataz; Olivier Lezoray; Sebastien Bougleux
 
  %% Jacobi iteration proposed by Elmoataz et al.
 [n,m] = size(f0);
