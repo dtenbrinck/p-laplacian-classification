@@ -32,6 +32,10 @@ classdef Graph
     % struct containing all meta information about the graph, e.g.,
     % neighborhood, distanceFunction, weightingFunction
     graphProperties;
+    
+    % the adjacencyMatrix for the graph, only gets computetet when the
+    % method getAdjacencyMatrix is called
+    adjacencyMatrix;
   end
   
   methods
@@ -44,7 +48,7 @@ classdef Graph
       obj.edges = zeros(0,2);
       obj.edgeWeights = zeros(0,1);
       obj.nodeNeighbors = zeros(0,3);
-      obj.graphProperties = [];      
+      obj.graphProperties = [];     
     end
     
     % adds a specified amount of vertices to the graph without overwriting 
@@ -90,6 +94,32 @@ classdef Graph
       weights = obj.edgeWeights(low_index:up_index);
     end
     
+    function obj = computeAdjacencyMatrix(obj)
+    %computeAdjacencyMatrix Computes a (in many cases) sparse matrix encoding
+    % adjacency of graph vertices by the corresponding edge weights.
+    %
+    % Authors: Daniel Tenbrinck, Samira Kabri, Tim Roith, 
+    %          Friedrich--Alexander-Universitaet Erlangen--Nuernberg
+
+    % initialize sparse matrix from edge weights
+    obj.adjacencyMatrix = sparse(obj.edges(:,1), obj.edges(:,2), obj.edgeWeights);
+    end
+    
+    function obj = symmetrizeGraph(obj)
+    %symmetrizeGraph symmetrize a graph instance
+    %
+    % Authors: Daniel Tenbrinck, Samira Kabri, Tim Roith, 
+    %          Friedrich--Alexander-Universitaet Erlangen--Nuernberg
+
+    % add all reverse edges and remove duplicates
+    [obj.edges,ia] = unique(cat(1,obj.edges,obj.edges(:,2:-1:1)),'rows');
+
+    % add all edge weights again
+    tmp = cat(1,obj.edgeWeights,obj.edgeWeights);
+
+    % remove all duplicates
+    obj.edgeWeights = tmp(ia);
+    end
   end
   
 end

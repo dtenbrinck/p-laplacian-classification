@@ -40,8 +40,12 @@ weightFunction.function = @(x)100*exp(-x.^2./10e+5);
 
  % call constructor for kNN graphs
  G = kNNGraph(data,neighborhood,distanceFunction,weightFunction);
+ 
+ % compute the adjacency matrix and store it
+ G = G.computeAdjacencyMatrix;
+ 
  % symmetrize kNN graph
- G = symmetrizeGraph(G);
+ G = G.symmetrizeGraph;
     
  fprintf('finished!\n');
 
@@ -55,10 +59,9 @@ numInClass = [980, 1135, 1032, 1010, 982, 892,958,1028,974,1009]';
 labeledIndices = labelIndices(numLabels, numInClass, lGroups);
 
 %% PERFORM CLASSIFICATION
-numVerts = 10000
 
 tic
-[~,~,perc] = classifyMnist(G, 2, 10, labeledIndices, numVerts);
+[~,~,perc] = classifyMnist(G, 2, 10, labeledIndices, 1e-3);
 save('./savedData/goodweights12.mat', 'perc');
 toc
 
