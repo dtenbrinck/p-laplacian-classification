@@ -1,5 +1,5 @@
-function accuracy = test(labels, realLabels)
-%test - test labels against realLables
+function accuracy = test_accuracy(labels, realLabels)
+%test_accuracy - test labels against realLables
 %
 % accuracy = test(labels, realLables)
 %

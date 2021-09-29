@@ -1,3 +1,10 @@
+% This script constructs a graph by interpreting the 28x28 pixel images from 
+% the popular MNIST digit dataset as a pointcloud in a 784-dimensional space 
+% and subsequently performs semi-supervised classification by solving the 
+% graph p-Laplacian equation on the graph.
+%
+% Authors: Daniel Tenbrinck, Samira Kabri, Tim Roith, 
+%          Friedrich--Alexander-Universitaet Erlangen--Nuernberg
 %% CLEAN UP
 clc; clear; close all;
 
@@ -75,6 +82,6 @@ fprintf('Finished diffusion after %s seconds.\n', t);
 fprintf(cLine,'\n');
 
 %% Test Accuracy
-accuracy = test(labels, realLabels);
+accuracy = test_accuracy(labels, realLabels);
 fprintf(sLine,'\n');
 fprintf('The classification had an average accuracy of %f .\n', round(100*accuracy,2));
