@@ -7,7 +7,10 @@ function images = loadMNISTImages(filename)
 %the raw MNIST images
 
 fp = fopen(filename, 'rb');
-assert(fp ~= -1, ['Could not open ', filename, '']);
+assert(fp ~= -1, ['Could not open, ', filename,...
+                  'please download the MNIST dataset from ',...  
+                  'http://yann.lecun.com/exdb/mnist/ and put the ', ...
+                  'corresponding files in this folder.']);
 
 magic = fread(fp, 1, 'int32', 0, 'ieee-be');
 assert(magic == 2051, ['Bad magic number in ', filename, '']);
