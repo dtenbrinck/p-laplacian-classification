@@ -2,9 +2,9 @@
 clc; clear; close all;
 
 % add needed subdirectories
+addpath('./algorithm');
 addpath('./data');
-addpath(genpath('./graph_functions'));
-addpath('./savedData');
+addpath('./graph_construction');
 
 %% Output configuration
 sLine = strcat(repmat('^',1,50),'\n');
@@ -77,4 +77,4 @@ fprintf(cLine,'\n');
 %% Test Accuracy
 accuracy = test(labels, realLabels);
 fprintf(sLine,'\n');
-fprintf('The classification had a accuracy of %f .\n', round(100*accuracy,2));
+fprintf('The classification had an average accuracy of %f .\n', round(100*accuracy,2));
